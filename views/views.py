@@ -29,3 +29,9 @@ def dependantfield(request):
 
 # # close connection
 # conn.close()
+
+localhost should be replaced with the hostname or IP address of the Oracle database server.
+1521 should be replaced with the port number on which the Oracle listener is running (default is 1521).
+ORCLCDB.localdomain should be replaced with the service name of the Oracle database.
+myusername should be replaced with the username of a valid user account in the Oracle database.
+mypassword should be replaced with the password for the specified user account.
