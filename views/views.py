@@ -14,3 +14,18 @@ def dependantfield(request):
         district = District.objects.filter(state=getstate)
     country = Country.objects.all()
     return render(request, 'dependantfield.html', locals())
+
+# import cx_Oracle
+
+# # set up connection details
+# dsn_tns = cx_Oracle.makedsn('localhost', '1521', service_name='ORCLCDB.localdomain')
+# conn = cx_Oracle.connect(user='myusername', password='mypassword', dsn=dsn_tns)
+
+# # perform database operations
+# cursor = conn.cursor()
+# cursor.execute('SELECT * FROM mytable')
+# results = cursor.fetchall()
+# print(results)
+
+# # close connection
+# conn.close()
