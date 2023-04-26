@@ -1,7 +1,14 @@
 from django.contrib import admin
-from myapp.models import Country, State, District
+from .models import Continent, Country, City
 
+@admin.register(Continent)
+class ContinentAdmin(admin.ModelAdmin):
+    list_display = ('name',)
 
-admin.site.register(Country)
-admin.site.register(State)
-admin.site.register(District)
+@admin.register(Country)
+class CountryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'continent')
+
+@admin.register(City)
+class CityAdmin(admin.ModelAdmin):
+    list_display = ('name', 'country')

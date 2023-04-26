@@ -1,131 +1,224 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-<link rel="stylesheet" type="text/css" href="css/style.css">
-<link rel="stylesheet" type="text/css" href="css/responsive.css">
+    <meta charset="UTF-8">
+    <title>Multi-Cascading Dropdowns</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+		$(document).ready(function() {
+			// initialize dropdowns
 
-<!-- ChatBot -->
-<link rel="stylesheet" type="text/css" href="css/jquery.convform.css">
-<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
-<script type="text/javascript" src="js/jquery.convform.js"></script>
-<script type="text/javascript" src="js/custom.js"></script>
+			// validate name field
+			$("#fname").keyup(function() {
+				var name = $(this).val();
+				if (name.length < 5) {
+					$(this).css("border-color", "red");
+				} else {
+					$(this).css("border-    color", "green");
+				}
+			});
 
+            $("#lname").keyup(function() {
+				var name = $(this).val();
+				if (name.length <5) {
+					$(this).css("border-color", "red");
+				} else {
+					$(this).css("border-color", "green");
+				}
+			});
+        });
+    </script>
 </head>
 <body>
-<!-- ChatBot -->
-<div class="chat_icon">
-	<i class="fa fa-comments" aria-hidden="true"></i>
+
+    <form action="{% url 'index' %}" method="POST" id="index" onsubmit="return validate()">
+         {% csrf_token %}
+
+    <div id="form-container">
+        <div class="form-section">
+    <label for="fname">First name: </label>
+    <div>
+    <input type="text" required id="fname" name="fname" length="5" style="min-width: 100%;width: auto;min-height: 19px;" onkeyup="validateName();"><br><br> 
+    <span id="nameError" class="error" style="color:red;"></span><br>
+    </div>
+
+    </div>
+
+    <div class="form-section">
+        <label for="lname">Last name: </label>
+        <div>
+        <input type="text" required id="lname" name="lname" length="5" style="min-width: 100%;width: auto;min-height: 19px;" onkeyup="validatelName();"><br><br> 
+        <span id="lnameError" class="error" style="color:red;"></span><br>
+        </div>
+    
+        </div>
+
+    
+
+        <div class="form-section">
+    <label for="fname">country: </label>   &nbsp
+    <div>
+    <select id="continent-select" name="TB_continent" id="TB_continent" required>
+        <option value="">Select a continent</option>
+        {% for continent in continents %}
+            <option value="{{ continent.id }}">{{ continent.name }}</option>
+        {% endfor %}
+    </select>
+</div>
+        </div>
+
+
+    <div class="form-section">
+    <label for="fname1">State: </label>   &nbsp
+    <select id="country-select" name="TB_country" id="TB_country" required >
+        <option value="">Select a country</option>
+    </select>
+
+        </div>
+
+        <div class="form-section">
+    <label for="fname2">City: </label>   &nbsp
+    <select id="city-select" name="TB_city" id="TB_city" required>
+        <option value="">Select a city</option>
+    </select>
+        </div>
+    </div>
+
+
+   
+
+
+
+<div class="end">
+    <button class="btn btn-outline-info" type="submit" value="Search">
+        <a>Submit</a>
+    </button>
+
+    <input type="submit" value="send">
 </div>
 
-<div class="chat_box">
 
-	<div>
-		<form action="https://ide.geeksforgeeks.org/">
-			<button class = "gfg" type="submit">
-				Click Here
-			</button>
-		</form>
-		
-	</div>
+</form>
+
+    <script>
 
 
-	<div class="my-conv-form-wrapper">
-		<form action="" method="GET" class="hidden">
+        $(document).ready(function() {
+            $("#continent-select").change(function() {
+                var continentId = $(this).val();
+                $.ajax({
+                    url: '/get_countries/',
+                    data: {
+                        'continent_id': continentId
+                    },
+                    success: function(data) {
+                        $("#country-select").html('<option value="">Select a country</option>');
+                        $.each(data.countries, function(i, country) {
+                            $("#country-select").append('<option value="' + country.id + '">' + country.name + '</option>');
+                        });
+                    }
+                });
 
-<select name="programmer" data-conv-question="Hi User, I am Jarvis. Please choose from the below wide range of options">
-	<option value="customerandaccount">Customer and Accounts</option>
-	<option value="no">No</option>
-	<option value="triumph">Triumph</option>
-</select>
-<div data-conv-fork="programmer">
-	<div data-conv-case="customerandaccount">
-	 	<select name="choosecustomer" data-conv-question="Have you ever thought about learning? Programming is fun!">
-			<option value="personal_customer">personal customer</option>
-			<option value="bap_customer">bap customer</option>
-			<option value="business_only_customer">Business Only Customer</option>
-		</select>
-
-			<div data-conv-fork="choosecustomer">
-				<div data-conv-case="personal_customer">
-	 				<select name="selected_customer" data-conv-question="Choose the environment on which you want customers and accounts">
-						<option value="tbp">TBP</option>
-						<option value="tbj">TBJ</option>
-						<option value="tbu">TBU</option>
-					</select>
-				</div>
-				<div data-conv-case="no">
-	 				<input type="text" data-conv-question="A fellow programmer! Hot." data-no-answer="true">
-				</div>
-			</div>
-
-
-
-	</div>
-
-	<div data-conv-case="no">
-		<select name="thought" data-conv-question="Have you ever thought about learning? Programming is fun!">
-			<option value="yes">Yes</option>
-			<option value="no">No..</option>
-		</select>
-		
-			<div data-conv-fork="thought">
-				<div data-conv-case="yes">
-	 				<select name="sure" data-conv-question="Are you sure">
-						<option value="yes">Yes</option>
-						<option value="no">No..</option>
-					</select>
-				</div>
-				<div data-conv-case="no">
-	 				<input type="text" data-conv-question="A fellow programmer! Hot." data-no-answer="true">
-				</div>
-			</div>
-	</div>
-
-	
-	<div data-conv-case="none">
-		<select name="bought" data-conv-question="Would you like to persue your career in this field!">
-			<option value="yes">Yes</option>
-			<option value="no">No..</option>
-		</select>
-	</div>
+                $("#fname").keyup(function() {
+                    var name = $(this).val();
+                    if (name.length < 5) {
+                        $(this).css("border-color", "red");
+                        var nameError = document.getElementById("name-error");
+                        nameError.innerHTML = "Name should be at least 5 characters long.";
+                    } else {
+                        $(this).css("border-color", "green");
+                    }
+                });
+            });
+            $("#country-select").change(function() {
+                var countryId = $(this).val();
+                $.ajax({
+                    url: '/get_cities/',
+                    data: {
+                        'country_id': countryId
+                    },
+                    success: function(data) {
+                        $("#city-select").html('<option value="">Select a city</option>');
+                        $.each(data.cities, function(i, city) {
+                            $("#city-select").append('<option value="' + city.id + '">' + city.name + '</option>');
+                        });
+                    }
+                });
+            });
+            
+        });
 
 
-</div>
-  	</form>
-	</div>
-</div>
-<!-- ChatBot end -->
+        
 
 
+    </script>
+    <script>
+        function validate()
+        {
+            validateName();
+            validatelName();
+            var errorElements = document.getElementsByClassName("error");
 
-<div class="banner d-flex align-items-center" style="background-image: url('images/banner.jpg');" id="home">
-	
-	<div class="container">
-		<div class="row">
-			
-		</div>
-	</div>
-</div>			
+			for (var i = 0; i < errorElements.length; i++) {
+				if (errorElements[i].innerHTML !== "") {
+					alert("Form submission failed. Please fix the errors and try again.");
+					return false;
+				}
+			}
 
+			alert("Form submitted successfully.");
+			return true;    
+        }
+    </script>
+    <script>
+        function validateName()
+        {
+            var nameInput = document.getElementById("fname");
+			var nameError = document.getElementById("nameError");
 
+			if (nameInput.value.length !== 5) {
+				nameError.innerHTML = "Name must be 5 characters long";
+			} else {
+				nameError.innerHTML = "";
+			}
+        }
 
-<script type="text/javascript">
-	portfolioList = document.querySelectorAll('.portfolio-box');
-	portfolioList.forEach(function(portfolioPic) {
-		portfolioPic.addEventListener('click',function(){
-			bg = this.style.backgroundImage;
-			document.getElementById('port_pop_pic_bg').classList.add("active")
-			document.getElementById('port_pop_pic').style.backgroundImage = bg
-			document.getElementById('port_pop_pic').classList.add("active")
-		});	
-	})
-	
-</script>
+        function validatelName()
+        {
+            var lnameInput = document.getElementById("lname");
+			var lnameError = document.getElementById("lnameError");
 
+			if (lnameInput.value.length !== 5) {
+				lnameError.innerHTML = "Last name must be 5 characters long";
+			} else {
+				lnameError.innerHTML = "";
+			}
+        }
+    </script>
+    <style>
+        select
+        {
+            
+            width: auto;
+            min-height: 25px;
+            min-width: 100%;
+        }
+        #form-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 20px;
+            
+          }
+          
+          .form-section {
+            padding: 10px;
+            padding-left: 30px;
+            
+            
+          }
+          
+    </style>
 </body>
 </html>
