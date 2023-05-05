@@ -39,3 +39,108 @@ def index(request):
     continents = Continent.objects.all().order_by('name')
     context = {'continents': continents}
     return render(request, 'index.html', context)
+
+
+
+
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
+from .forms import *
+
+# Create your views here.
+def mf_update_details(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            id=form.cleaned_data["registration_id"]
+            print(id)
+            return HttpResponse("You registartion is successful")
+        else:
+            pass
+    else:
+        form = RegistrationForm(auto_id=True)
+        return render(request,"registration.html",{'form':form})
+    
+
+    
+    
+    
+    
+    from django.urls import path
+from . import views
+urlpatterns = [
+path("mainframe/update_details",views.mf_update_details,name="update_details")
+]
+
+
+
+
+
+
+
+from django.db import models
+
+# Create your models here.
+class Registration(models.Model):
+    registration_id=models.PositiveIntegerField()
+    name=models.CharField(max_length=10)
+    address = models.TextField()
+    
+    
+    
+    
+    
+    from .models import *
+from django import forms
+
+class RegistrationForm(forms.ModelForm):
+    post_codes=(
+        ('A',"534211"),
+        ('B',"894063"),
+    )
+    postal_code = forms.ChoiceField(choices=post_codes,required=True)
+    class Meta:
+        model = Registration
+        fields=[
+            "registration_id",
+            "address"
+        ]
+        labels={
+            "registration_id":"Registration Id",
+            
+        }
+        
+        
+        
+        
+        <form method="POST">
+    {% csrf_token %} 
+    {% for field in form %}
+    {% if field.name == "address" %}
+    <div class="a" style="color:red;">
+    {{ field.label }}
+    {{ field }}
+    </div>
+    {% else %}
+    {{ field.label }}
+    {{ field }}
+    {% endif %}
+    {% endfor %}
+
+
+    <div>
+        <button type="submit">Register</button>
+    </div>
+    
+    
+    
+    
+    
+    from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('',include("demo1.urls")),
+]
+
