@@ -1,72 +1,46 @@
-# Logistic Regression
+import asyncio
+import aiohttp
+import json
+a=2
+async def call_api(session, url, headers, body_char):
+    body = {"tite": f"foo{body_char}", "body": "bar", "userId": 1}
+    try:
+        async with session.post(url, headers=headers, json=body) as response:
+            status = response.status
+            print('the status raised before is')
+            print(response.raise_for_status())
+            body = await response.json()
+            return status, body
+    except aiohttp.ClientResponseError as errh:
+        print("Inside clientresponseerror")
+        print(errh)
+        return errh,errh
+    except aiohttp.ClientError as e:
+        print('inside clienterror')
+        print(e)
+        return e,e
+async def main():
+    async with aiohttp.ClientSession() as session:
+        url = "https://jsonplaceholder.typicode.com/postsS"
+        headers = {"Content-type": "application/json"}
+        body_chars = ["_1", "_2", "_3", "_4", "_5"]
+        body_chars = body_chars[:a]
+        tasks = [call_api(session, url, headers, body_char) for body_char in body_chars]
+        responses = await asyncio.gather(*tasks)
+        status=[]
+        body=[]
+        print(responses)
+        for i, j in responses:
+            status.append(i)
+            body.append(j)
+        return status,body
+            
 
-# Importing the libraries
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
-
-# Importing the dataset
-dataset = pd.read_csv('Social_Network_Ads.csv')
-X = dataset.iloc[:, [2, 3]].values
-y = dataset.iloc[:, 4].values
-
-# Splitting the dataset into the Training set and Test set
-from sklearn.cross_validation import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
-
-# Feature Scaling
-from sklearn.preprocessing import StandardScaler
-sc = StandardScaler()
-X_train = sc.fit_transform(X_train)
-X_test = sc.transform(X_test)
-
-# Fitting Logistic Regression to the Training set
-from sklearn.linear_model import LogisticRegression
-classifier = LogisticRegression(random_state = 0)
-classifier.fit(X_train, y_train)
-
-# Predicting the Test set results
-y_pred = classifier.predict(X_test)
-
-# Making the Confusion Matrix
-from sklearn.metrics import confusion_matrix
-cm = confusion_matrix(y_test, y_pred)
-
-### Visualising the Training set results
-##from matplotlib.colors import ListedColormap
-##X_set, y_set = X_train, y_train
-##X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 1, stop = X_set[:, 0].max() + 1, step = 0.01),
-##                     np.arange(start = X_set[:, 1].min() - 1, stop = X_set[:, 1].max() + 1, step = 0.01))
-##
-##
-##print(X1,X2)
-##plt.contourf(X1, X2, classifier.predict(np.array([X1.ravel(), X2.ravel()]).T).reshape(X1.shape),
-##             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
-##plt.xlim(X1.min(), X1.max())
-##plt.ylim(X2.min(), X2.max())
-##for i, j in enumerate(np.unique(y_set)):
-##    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
-##                c = ListedColormap(('red', 'green'))(i), label = j)
-##plt.title('Logistic Regression (Training set)')
-##plt.xlabel('Age')
-##plt.ylabel('Estimated Salary')
-##plt.legend()
-##plt.show()
-##
-### Visualising the Test set results
-##from matplotlib.colors import ListedColormap
-##X_set, y_set = X_test, y_test
-##X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 1, stop = X_set[:, 0].max() + 1, step = 0.01),
-##                     np.arange(start = X_set[:, 1].min() - 1, stop = X_set[:, 1].max() + 1, step = 0.01))
-##plt.contourf(X1, X2, classifier.predict(np.array([X1.ravel(), X2.ravel()]).T).reshape(X1.shape),
-##             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
-##plt.xlim(X1.min(), X1.max())
-##plt.ylim(X2.min(), X2.max())
-##for i, j in enumerate(np.unique(y_set)):
-##    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
-##                c = ListedColormap(('red', 'green'))(i), label = j)
-##plt.title('Logistic Regression (Test set)')
-##plt.xlabel('Age')
-##plt.ylabel('Estimated Salary')
-##plt.legend()
-##plt.show()
+def a1():
+    status,body=asyncio.run(main())
+    print("the status is:")
+    print(status)
+    print("the body is:")
+    print(body)
+    
+a1()
