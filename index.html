@@ -1,8 +1,14 @@
 import logging
 from logging.handlers import RotatingFileHandler
 
+# Log directory path
+log_directory = 'logs'  # Replace with the actual path to your log directory
+
+# Log file name
+log_file_name = 'debug.log'  # Replace with the desired log file name
+
 # Log file path
-log_file_path = 'logs/debug.log'  # Replace with the actual path and filename of your log file
+log_file_path = f'{log_directory}/{log_file_name}'
 
 # Configure logging
 logging.basicConfig(
