@@ -1,14 +1,32 @@
-import time
-class SessionUpdateMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
+import pandas as pd
+from django.http import HttpResponse
 
-    def __call__(self, request):
-        if 'last_update_time' not in request.session:
-            request.session['last_update_time'] = time.time()
-        elif time.time() - request.session['last_update_time'] > 10:
-            request.session['last_update_time'] = time.time()
-            # update session value here
+def download_report(request):
+    data = request.session.get('data')  # Retrieve the data from the session
 
-        response = self.get_response(request)
-        return response
+    # Create a pandas DataFrame using the retrieved data
+    df = pd.DataFrame(data)
+
+    # Convert DataFrame to Excel
+    output = BytesIO()
+    writer = pd.ExcelWriter(output, engine='openpyxl')
+    df.to_excel(writer, index=False, sheet_name='Sheet1')
+    writer.save()
+    output.seek(0)
+
+    # Create the HttpResponse object with the appropriate headers
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=myreport.xlsx'
+    response.write(output.getvalue())
+
+    return response
+
+
+
+from django.urls import path
+from .views import process_data, download_report
+
+urlpatterns = [
+    path('process/', process_data, name='process_data'),
+    path('download/', download_report, name='download_report'),
+]
