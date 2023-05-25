@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dataframes Example</title>
+    <style>
+        /* CSS to style the dataframes */
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid #ccc;
+        }
+
+        td {
+            padding: 12px;
+            border: 1px solid #ccc;
+        }
+
+        /* Add hover effect to table rows */
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* CSS to hide the dataframes by default */
+        .hidden {
+            display: none;
+        }
+
+        .row-count {
+            text-align: right;
+            margin-top: -20px;
+            margin-bottom: 10px;
+            color: gray;
+            font-size: 14px;
+        }
+
+        /* CSS for search section */
+        #searchSection {
+            display: none;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #searchInput {
+            padding: 6px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        #searchButton {
+            padding: 6px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        #noResultsMessage {
+            color: red;
+            margin-top: 10px;
+        }
+
+        #toggleButton {
+            padding: 6px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+
+        #markerContainer {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</head>
+<body>
+    <div id="searchSection">
+        <span>Search for existing marker here:</span>
+        <input type="text" id="searchInput" placeholder="Search...">
+        <div id="noResultsMessage" style="display: none">No search results found.</div>
+    </div>
+
+    <div id="markerContainer">
+        <div id="df1" class="visible">
+            <h1>The first two markers are:</h1>
+            <div class="row-count"></div>
+            <table>
+                <tr>
+                    <th>Column1</th>
+                    <th>Column2</th>
+                </tr>
+                <!-- Rows for first dataframe -->
+                {% for index, row in df1.iterrows %}
+                    <tr>
+                        <td>{{ row.Column1 }}</td>
+                        <td>{{ row.Column2 }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div id="df2" class="hidden">
+            <h1>The markers are:</h1>
+            <div class="row-count"></div>
+            <table>
+                <tr>
+                    <th>Column3</th>
+                    <th>Column4</th>
+                </tr>
+                {% for index, row in df2.iterrows %}
+                    <tr>
+                        <td>{{ row.Column3 }}</td>
+                        <td>{{ row.Column4 }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <button id="toggleButton">Show All</button>
+    </div>
+
+    <script>
+        // JavaScript to toggle the visibility of the dataframes
+        const toggleButton = document.getElementById('toggleButton');
+        const df1Div = document.getElementById('df1');
+        const df2Div = document.getElementById('df2');
+        const searchSection = document.getElementById('searchSection');
+        const searchInput = document.getElementById('searchInput');
+        const df2Rows = df2Div.querySelectorAll('tr:not(:first-child)');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+
+        let isPreviewMode = true;
+
+        toggleButton.addEventListener('click', function () {
+            isPreviewMode = !isPreviewMode;
+
+            if (isPreviewMode) {
+                toggleButton.textContent = 'Preview';
+                searchSection.style.display = 'none';
+                df1Div.classList.remove('hidden');
+                df2Div.classList.add('hidden');
+            } else {
+                toggleButton.textContent = 'Preview';
+                searchSection.style.display = 'block';
+                df1Div.classList.add('hidden');
+                df2Div.classList.remove('hidden');
+            }
+        });
+
+        function performSearch() {
+            if (!isPreviewMode) {
+                const searchText = searchInput.value.toLowerCase();
+                let anyResultsFound = false;
+
+                df2Rows.forEach(function (row) {
+                    const columns = row.getElementsByTagName('td');
+                    let rowVisible = false;
+
+                    for (let i = 0; i < columns.length; i++) {
+                        const cellValue = columns[i].textContent || columns[i].innerText;
+                        if (cellValue.toLowerCase().indexOf(searchText) > -1) {
+                            rowVisible = true;
+                            anyResultsFound = true;
+                            break;
+                        }
+                    }
+
+                    row.style.display = rowVisible ? 'table-row' : 'none';
+                });
+
+                if (!anyResultsFound) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'No markers found.',
+                        text: 'Use the below option to add.'
+                    });
+                }
+            }
+        }
+
+        searchInput.addEventListener('input', performSearch);
+    </script>
+</body>
+</html>
