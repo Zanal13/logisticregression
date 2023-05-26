@@ -94,13 +94,14 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
-    <div id="searchSection">
-        <span>Search for existing marker here:</span>
-        <input type="text" id="searchInput" placeholder="Search...">
-        <div id="noResultsMessage" style="display: none">No search results found.</div>
-    </div>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="customer_id">Customer ID:</label>
+        <input type="text" id="customer_id" name="customer_id">
+        <button type="submit">Submit</button>
+    </form>
 
-    <div id="markerContainer">
+    {% if df1 is not empty %}
         <div id="df1" class="visible">
             <h1>The first two markers are:</h1>
             <div class="row-count"></div>
@@ -118,7 +119,9 @@
                 {% endfor %}
             </table>
         </div>
+    {% endif %}
 
+    {% if df2 is not empty %}
         <div id="df2" class="hidden">
             <h1>The markers are:</h1>
             <div class="row-count"></div>
@@ -135,9 +138,19 @@
                 {% endfor %}
             </table>
         </div>
+    {% endif %}
 
+    <div id="searchSection">
+        <span>Search for existing marker here:</span>
+        <input type="text" id="searchInput" placeholder="Search...">
+        <div id="noResultsMessage" style="display: none">No search results found.</div>
+    </div>
+
+    {% if df2 is not empty or df2 is not empty  %}
+    <div id="markerContainer">
         <button id="toggleButton">Show All</button>
     </div>
+    {% endif %}
 
     <script>
         // JavaScript to toggle the visibility of the dataframes
