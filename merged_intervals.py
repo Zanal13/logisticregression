@@ -17,39 +17,46 @@ def calculate_interval_length(intervals):
 
 
 def calculate_closest_point(player1_instructions, player2_instructions):
-    player1_position = [0, 0]
-    player2_position = [0, 0]
+    player1_positions = [(0, 0)]
+    player2_positions = [(0, 0)]
     closest_distance = float('inf')
     closest_point = None
 
     for instr in player1_instructions:
         direction, steps = instr[0], int(instr[1:])
         for _ in range(steps):
+            prev_position = player1_positions[-1]
             if direction == 'R':
-                player1_position[0] += 1
+                new_position = (prev_position[0] + 1, prev_position[1])
             elif direction == 'L':
-                player1_position[0] -= 1
+                new_position = (prev_position[0] - 1, prev_position[1])
             elif direction == 'U':
-                player1_position[1] += 1
+                new_position = (prev_position[0], prev_position[1] + 1)
             elif direction == 'D':
-                player1_position[1] -= 1
+                new_position = (prev_position[0], prev_position[1] - 1)
+            player1_positions.append(new_position)
 
-            for instr2 in player2_instructions:
-                direction2, steps2 = instr2[0], int(instr2[1:])
-                for _ in range(steps2):
-                    if direction2 == 'R':
-                        player2_position[0] += 1
-                    elif direction2 == 'L':
-                        player2_position[0] -= 1
-                    elif direction2 == 'U':
-                        player2_position[1] += 1
-                    elif direction2 == 'D':
-                        player2_position[1] -= 1
+    for instr in player2_instructions:
+        direction, steps = instr[0], int(instr[1:])
+        for _ in range(steps):
+            prev_position = player2_positions[-1]
+            if direction == 'R':
+                new_position = (prev_position[0] + 1, prev_position[1])
+            elif direction == 'L':
+                new_position = (prev_position[0] - 1, prev_position[1])
+            elif direction == 'U':
+                new_position = (prev_position[0], prev_position[1] + 1)
+            elif direction == 'D':
+                new_position = (prev_position[0], prev_position[1] - 1)
+            player2_positions.append(new_position)
 
-                    distance = abs(player1_position[0] - player2_position[0]) + abs(player1_position[1] - player2_position[1])
-                    if distance < closest_distance:
-                        closest_distance = distance
-                        closest_point = (player1_position[0], player1_position[1])
+    common_positions = set(player1_positions) & set(player2_positions)
+
+    for position in common_positions:
+        distance = abs(position[0]) + abs(position[1])
+        if distance < closest_distance:
+            closest_distance = distance
+            closest_point = position
 
     return closest_point
 
@@ -59,3 +66,4 @@ player2_instructions = ['U6', 'L1', 'D10', 'L2', 'U4']
 
 closest_point = calculate_closest_point(player1_instructions, player2_instructions)
 print(closest_point)  # Output: (-1, 2)
+
