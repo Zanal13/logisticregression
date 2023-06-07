@@ -1,0 +1,17 @@
+If your Django project is already deployed in AWS and you want to make changes to the database schema without running python manage.py commands directly on the server, you have a few options:
+
+Local Development: Make the necessary changes to your models locally on your development machine. Run python manage.py makemigrations to generate the migration files, and then copy those migration files to your AWS server. Finally, run python manage.py migrate on the server to apply the migrations and update the database schema.
+
+Deployment Scripts: Create deployment scripts or automation pipelines using tools like AWS CodePipeline, Jenkins, or GitLab CI/CD. These scripts can automatically deploy your Django project to AWS while performing necessary migration commands as part of the deployment process.
+
+Database Migration Tools: Utilize database migration tools like Django's django-db-migrate or third-party tools like Alembic or Flyway. These tools allow you to generate and manage database migrations separately, and then apply them to your deployed project using the respective migration commands.
+
+Manual Migration Execution: If you have direct access to the server hosting your Django project, you can SSH into the server, activate the virtual environment, navigate to your project directory, and manually run the necessary migration commands (makemigrations and migrate) on the server.
+
+Regardless of the approach you choose, it's important to ensure that you have backups of your database before performing any database schema changes. This will allow you to restore the database in case any issues occur during the migration process.
+
+Remember to test your changes thoroughly in a development or staging environment before applying them to a production environment to minimize the risk of data loss or other unexpected issues.
+
+
+
+
