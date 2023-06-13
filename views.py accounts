@@ -44,3 +44,9 @@ def link_customers(request):
         # Perform necessary operations and API calls
 
     return render(request, 'account_creation.html',{"customer_ids":customer_ids})
+    
+    
+    
+    
+    path('generate-customers/', views.generate_customers, name='generate_customers'),
+path('link-customers/', views.link_customers, name='link_customers'),]
