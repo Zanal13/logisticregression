@@ -1,0 +1,46 @@
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
+from .forms import *
+
+# Create your views here.
+def mf_update_details(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            id=form.cleaned_data["registration_id"]
+            print(id)
+            return HttpResponse("You registartion is successful")
+        else:
+            pass
+    else:
+        form = RegistrationForm(auto_id=True)
+        return render(request,"registration.html",{'form':form})
+    
+# views.py
+
+
+def generate_customers(request):
+    # Generate customer IDs logic
+    # Store the generated customer IDs in a variable
+    customer_ids = ['1', '2']
+
+    # Render customer_linking.html with customer IDs
+    return render(request, 'customer_linking.html', {'customer_ids': customer_ids})
+
+def link_customers(request):
+    if request.method == 'POST':
+        print("the default acount is")
+        print(request.POST["default_account"])
+        print("the account1 is:")
+        print(request.POST["account_1"])
+        try:
+            if request.POST["account_2"]:
+                print("one")
+        except:
+            print("two")
+        customer_ids = ['1', '2','3','4','5']
+        # Link customers with accounts logic
+        # Retrieve submitted account linking data
+        # Perform necessary operations and API calls
+
+    return render(request, 'account_creation.html',{"customer_ids":customer_ids})
