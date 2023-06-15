@@ -55,3 +55,8 @@ finally:
 # Raising an exception
 raise ExceptionType("Exception message")
 
+
+In Python, there is no direct equivalent keyword to throws in Java. In Java, the throws keyword is used in a method declaration to indicate that the method may throw one or more specific exceptions, and the calling code must handle or declare those exceptions.
+
+In Python, exceptions are not explicitly declared in method signatures. Instead, any function or method can raise an exception using the raise keyword when an exceptional condition occurs
+
