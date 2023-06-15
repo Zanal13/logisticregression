@@ -1,0 +1,57 @@
+try: The try block is used to enclose the code that might throw an exception.
+catch: The catch block is used to handle exceptions. It catches the exception thrown in the corresponding try block.
+finally: The finally block is used to specify code that will be executed regardless of whether an exception occurred or not.
+throw: The throw keyword is used to explicitly throw an exception.
+throws: The throws keyword is used in a method declaration to indicate that the method may throw one or more checked exceptions. It is used to specify the exceptions that the method can throw, allowing the caller of the method to handle those exceptions.
+Here's an example of exception handling in Java:
+
+try {
+    // Code that might throw an exception
+} catch (ExceptionType1 exceptionVariable1) {
+    // Handle ExceptionType1
+} catch (ExceptionType2 exceptionVariable2) {
+    // Handle ExceptionType2
+} finally {
+    // Code that will be executed regardless of whether an exception occurred or not
+}
+
+// Method declaration with throws keyword
+public void methodName() throws ExceptionType1, ExceptionType2 {
+    // Method implementation
+}
+
+// Throwing an exception
+throw new ExceptionType("Exception message");
+
+
+
+
+
+
+exception keywords in python
+try: The try block is used to enclose the code that might raise an exception.
+except: The except block is used to handle specific exceptions that are raised in the corresponding try block.
+else: The else block is used to specify code that will be executed if no exceptions are raised in the try block.
+finally: The finally block is used to specify code that will be executed regardless of whether an exception occurred or not. It is commonly used for cleanup tasks.
+raise: The raise keyword is used to explicitly raise an exception.
+
+
+try:
+    # Code that might raise an exception
+    pass
+except ExceptionType1 as exception_variable1:
+    # Handle ExceptionType1
+    pass
+except ExceptionType2 as exception_variable2:
+    # Handle ExceptionType2
+    pass
+else:
+    # Code that will be executed if no exceptions are raised
+    pass
+finally:
+    # Code that will be executed regardless of whether an exception occurred or not
+    pass
+
+# Raising an exception
+raise ExceptionType("Exception message")
+
