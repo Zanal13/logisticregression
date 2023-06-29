@@ -1,0 +1,65 @@
+import concurrent.futures
+import pandas as pd
+
+def query1(param1, param2):
+    # Perform query 1 using the provided parameters
+    result = ...
+    
+    # Convert the result to a Pandas DataFrame
+    result_df = pd.DataFrame(result)
+    
+    return result_df
+
+def query2(param1, param2, param3):
+    # Perform query 2 using the provided parameters
+    result = ...
+    
+    # Convert the result to a Pandas DataFrame
+    result_df = pd.DataFrame(result)
+    
+    return result_df
+
+def query3(param1):
+    # Perform query 3 using the provided parameter
+    result = ...
+    
+    # Convert the result to a Pandas DataFrame
+    result_df = pd.DataFrame(result)
+    
+    return result_df
+
+# Define the parameters for each query
+query1_params = (param1_value, param2_value)
+query2_params = (param1_value, param2_value, param3_value)
+query3_params = (param1_value,)
+
+# Create a ThreadPoolExecutor with the desired number of workers
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    # Submit the queries to the executor
+    future1 = executor.submit(query1, *query1_params)
+    
+    # Check if result1 is empty before proceeding
+    if not future1.result().empty:
+        # result1 is not empty, continue with other queries
+        future2 = executor.submit(query2, *query2_params)
+        future3 = executor.submit(query3, *query3_params)
+
+        # Wait for all the queries to complete
+        concurrent.futures.wait([future1, future2, future3])
+
+        # Get the results of the queries
+        result1 = future1.result()
+        result2 = future2.result()
+        result3 = future3.result()
+    else:
+        # result1 is empty, stop the process
+        print("result1 is empty, stopping the process")
+        exit()  # or return, depending on the context
+
+# Perform required action with the results
+if not result1.empty and not result2.empty and not result3.empty:
+    # All queries returned non-empty DataFrames
+    # Perform the required action
+else:
+    # At least one query returned an empty DataFrame
+    # Handle the case appropriately
