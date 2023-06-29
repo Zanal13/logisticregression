@@ -1,0 +1,19 @@
+If you need to join two tables and apply a WHERE clause to the joined table, it is generally more efficient to perform
+the filtering directly in the database query rather than retrieving all the columns
+and applying the equality comparison in a DataFrame.
+
+Here's why:
+
+Selecting all columns: If you select all the columns from both tables and then perform the equality
+comparison in a DataFrame, it requires transferring all the data from the database to the application.
+This can be inefficient, especially if the tables have many columns or if there is a large amount of data to be transferred.
+
+DataFrame operations: Performing operations in a DataFrame, such as filtering and equality comparisons, 
+involve additional processing overhead in the application layer.
+DataFrame operations are generally slower compared to equivalent operations performed directly in the database.
+
+
+In summary, it is recommended to perform the filtering and join operation in the database query itself
+to take advantage of database optimizations and minimize data transfer. 
+Only retrieve the necessary columns from the tables and let the database handle the filtering. 
+This approach typically results in better performance compared to retrieving all the columns and applying the equality comparison in a DataFrame.
