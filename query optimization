@@ -1,0 +1,49 @@
+import concurrent.futures
+
+def query1():
+    # Perform query 1 and return the result
+    result = ...
+
+    return result
+
+def query2():
+    # Perform query 2 and return the result
+    result = ...
+
+    return result
+
+def query3():
+    # Perform query 3 and return the result
+    result = ...
+
+    return result
+
+# Create a ThreadPoolExecutor with the desired number of workers
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    # Submit the queries to the executor
+    future1 = executor.submit(query1)
+    
+    # Check if result1 is empty before proceeding
+    if not future1.result():
+        # result1 is empty, stop the process
+        print("result1 is empty, stopping the process")
+        exit()  # or return, depending on the context
+    
+    future2 = executor.submit(query2)
+    future3 = executor.submit(query3)
+
+    # Wait for all the queries to complete
+    concurrent.futures.wait([future1, future2, future3])
+
+    # Get the results of the queries
+    result1 = future1.result()
+    result2 = future2.result()
+    result3 = future3.result()
+
+# Perform required action with the results
+if result1 and result2 and result3:
+    # All queries returned non-empty results
+    # Perform the required action
+else:
+    # At least one query returned an empty result
+    # Handle the case appropriately
