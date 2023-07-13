@@ -1,0 +1,12 @@
+  increament()
+    {
+        this.setState(
+            {
+                counter : this.state.counter + 1,
+                name : "Vital"
+            }
+            )
+    }
+
+
+<button onClick={this.increament}>Increament</button>
