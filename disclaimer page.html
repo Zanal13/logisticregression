@@ -1,0 +1,61 @@
+<!-- disclaimer.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Disclaimer Page</title>
+    <style>
+        /* Apply CSS to grey out the top part */
+        body {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Grey overlay color with transparency */
+            z-index: 999;
+        }
+
+        .disclaimer-container {
+            position: absolute;
+            bottom: 20px; /* Space from the bottom of the page */
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 600px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .disclaimer-text {
+            font-size: 16px;
+            line-height: 1.6;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Grey overlay for the top part -->
+    <div class="overlay"></div>
+
+    <!-- Disclaimer content at the bottom -->
+    <div class="disclaimer-container">
+        <div class="disclaimer-text">
+            <h2>Terms and Conditions</h2>
+            <p>This is the terms and conditions text. Replace this with your actual terms and conditions content.</p>
+            <p>By clicking "Accept" or continuing to use the website, you agree to the terms and conditions outlined in this document.</p>
+            <!-- Add the form for submitting and redirecting to the login page -->
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="submit" value="Accept">
+            </form>
+        </div>
+    </div>
+</body>
+</html>
