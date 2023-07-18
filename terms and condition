@@ -1,0 +1,77 @@
+# middleware.py
+
+from django.urls import reverse
+from django.shortcuts import redirect
+
+class TermsMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if request.user.is_authenticated and not request.session.get('has_accepted_terms', False):
+            excluded_urls = [
+                reverse('terms_acceptance'),  # Replace with the URL name for terms acceptance page
+                reverse('login'),  # Add any other login URL if applicable
+                reverse('register'),  # Add any other registration URL if applicable
+            ]
+
+            if request.path not in excluded_urls:
+                return redirect('terms_acceptance')
+
+        response = self.get_response(request)
+        return response
+
+
+
+# views.py
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def terms_acceptance(request):
+    if request.method == 'POST':
+        request.session['has_accepted_terms'] = True
+        return redirect('home')  # Redirect to the homepage after accepting terms
+    return render(request, 'terms_acceptance.html')
+
+
+
+# urls.py
+
+from django.urls import path
+from .middleware import TermsMiddleware
+from .views import terms_acceptance
+
+urlpatterns = [
+    path('terms_acceptance/', terms_acceptance, name='terms_acceptance'),
+    # Add other URLs for your app's views
+]
+
+# Add the custom middleware to the MIDDLEWARE list
+MIDDLEWARE = [
+    # ...
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'yourapp.middleware.TermsMiddleware',  # Add your app's middleware here
+    # ...
+]
+
+
+
+<!-- terms_acceptance.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Terms and Conditions</title>
+</head>
+<body>
+    <h1>Terms and Conditions</h1>
+    <!-- Display your terms and conditions here -->
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Accept">
+    </form>
+</body>
+</html>
