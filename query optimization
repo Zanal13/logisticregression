@@ -47,3 +47,77 @@ if result1 and result2 and result3:
 else:
     # At least one query returned an empty result
     # Handle the case appropriately
+
+====================================================================
+import concurrent.futures
+import time
+
+def query1():
+    # Perform query 1 and return the result
+    result = 0
+    time.sleep(4)
+    return result
+
+def query2():
+    # Perform query 2 and return the result
+    result = 2
+    time.sleep(7)
+    return result
+
+def query3():
+    # Perform query 3 and return the result
+    result = 3
+    time.sleep(10)
+    return result
+
+def main():
+    a = time.time()
+
+    # Create a ThreadPoolExecutor with the desired number of workers
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        # Submit the first query to the executor
+        future1 = executor.submit(query1)
+        future2 = executor.submit(query2)
+        future3 = executor.submit(query3)
+        # Check if result1 is empty and cancel the remaining queries if it is
+        if not future1.result():
+            print("result1 is empty, stopping the process")
+            # Cancel the remaining queries
+
+            future2.cancel()
+            future3.cancel()
+            b = time.time()
+            print(b - a)
+            return
+        
+        if not future2.result():
+            future3.cancel() 
+            b = time.time()
+            print(b - a)
+            return 
+
+        # Submit the other queries to the executor
+
+
+    # Get the results of the queries
+    result1 = future1.result()
+    result2 = future2.result()
+    result3 = future3.result()
+    print(result1)
+    print(result2)
+    print(result3)
+    # Perform required action with the results
+    if result2 and result3:
+        # All queries returned non-empty results
+        # Perform the required action
+        print("yes")
+        b = time.time()
+        print(b - a)
+    else:
+        # At least one query returned an empty result
+        # Handle the case appropriately
+        print("no")
+
+if __name__ == "__main__":
+    main()
+
