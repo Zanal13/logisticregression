@@ -1,0 +1,30 @@
+# settings.py
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/path/to/cache/folder',  # Replace with the actual path to the cache folder
+        'TIMEOUT': 60 * 60 * 24,  # 24 hours in seconds
+    }
+}
+
+
+from django.core.cache import cache
+from django.shortcuts import render
+from .models import YourModel
+
+def your_view(request):
+    # Check if the data is already cached
+    cached_data = cache.get('cached_data_key')
+
+    if cached_data is None:
+        # Data is not in the cache, perform the expensive operation (e.g., database query)
+        expensive_data = YourModel.objects.all()  # Replace with your actual queryset or expensive operation
+
+        # Cache the data for 24 hours (60 * 60 seconds * 24 hours)
+        cache.set('cached_data_key', expensive_data, 60 * 60 * 24)
+    else:
+        # Data is already in the cache, use the cached data
+        expensive_data = cached_data
+
+    return render(request, 'your_template.html', {'data': expensive_data})
