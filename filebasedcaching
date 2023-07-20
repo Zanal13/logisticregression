@@ -59,3 +59,33 @@ def your_view(request):
         expensive_data = cached_data
 
     return render(request, 'your_template.html', {'data': expensive_data})
+
+
+
+
+import pandas as pd
+from django.core.cache import cache
+
+# Assuming you have a DataFrame named "my_dataframe"
+# Cache the DataFrame using Django's file-based caching
+cache_key = "my_cached_dataframe"
+cache_timeout = 60 * 60 * 24  # Cache timeout in seconds (e.g., 24 hours)
+cache.set(cache_key, my_dataframe.to_pickle(), timeout=cache_timeout)
+
+
+
+
+import pandas as pd
+from django.core.cache import cache
+
+# Retrieve the DataFrame from the cache
+cached_dataframe_pickle = cache.get("my_cached_dataframe")
+
+# If the DataFrame is cached, load it from the pickle representation
+if cached_dataframe_pickle is not None:
+    cached_dataframe = pd.read_pickle(cached_dataframe_pickle)
+    print("DataFrame retrieved from cache:")
+    print(cached_dataframe)
+else:
+    print("DataFrame not found in cache.")
+
