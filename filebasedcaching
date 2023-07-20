@@ -9,6 +9,37 @@ CACHES = {
 }
 
 
+import os
+
+# Function to create the cache folder and cache_file if they don't exist
+def create_cache_file(cache_folder, cache_file_name):
+    if not os.path.exists(cache_folder):
+        os.makedirs(cache_folder)
+
+    cache_file_path = os.path.join(cache_folder, cache_file_name)
+    if not os.path.exists(cache_file_path):
+        with open(cache_file_path, "wt"):
+            pass  # The file is created as a text file
+    return cache_file_path
+
+# Define the cache folder and cache_file_name
+cache_folder = "/path/to/cache/folder"  # Replace with the desired cache folder path
+cache_file_name = "cache_file.txt"  # Replace with the desired cache file name with ".txt" extension
+
+# Create the cache file and get its path
+cache_file_path = create_cache_file(cache_folder, cache_file_name)
+
+# Update the CACHES setting in settings.py with the cache_file_path
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': cache_file_path,
+        'TIMEOUT': 60 * 60 * 24,  # 24 hours in seconds
+    }
+}
+
+
+
 from django.core.cache import cache
 from django.shortcuts import render
 from .models import YourModel
