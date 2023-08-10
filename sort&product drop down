@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Linking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            color: #0000ff;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+            max-width: 800px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #0000ff;
+        }
+        th {
+            background-color: #0000ff;
+            color: #ffffff;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 200px;
+        }
+        input[type="submit"] {
+            background-color: #0000ff;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+    <!-- Include SweetAlert library -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+<body>
+    <h1>Customer Linking</h1>
+    <label>
+        <input type="checkbox" id="use_default" name="use_default">
+        Use the same account and debit card for all customers
+    </label>
+    <script>
+        // SweetAlert prompt to ask user if they want to link customers with accounts
+        swal({
+            title: "Link Customers with Accounts",
+            text: "Do you want to link the created customers with accounts?",
+            icon: "info",
+            buttons: {
+                cancel: "No",
+                confirm: "Yes"
+            },
+        })
+        .then((value) => {
+            if (value) {
+                // Show the account linking form
+                document.getElementById("account_linking_form").style.display = "block";
+            } else {
+                // Display only the customer IDs
+                document.getElementById("customer_ids").style.display = "block";
+            }
+        });
+
+        // Checkbox functionality
+        document.getElementById("use_default").addEventListener("change", function() {
+            var accountInputs = document.querySelectorAll("select[name^='account_']");
+    var debitCardInputs = document.querySelectorAll("select[name^='debit_card_']");
+
+    if (this.checked) {
+        // Disable account and debit card selects for individual customers
+        for (var i = 0; i < accountInputs.length; i++) {
+            accountInputs[i].disabled = true;
+        }
+        for (var i = 0; i < debitCardInputs.length; i++) {
+            debitCardInputs[i].disabled = true;
+        }
+        defaultDebitCardInput.disabled = false;
+        defaultAccountInput.disabled = false;
+    } else {
+        // Enable account and debit card selects for individual customers
+        for (var i = 0; i < accountInputs.length; i++) {
+            accountInputs[i].disabled = false;
+        }
+        for (var i = 0; i < debitCardInputs.length; i++) {
+            debitCardInputs[i].disabled = false;
+        }
+        defaultDebitCardInput.disabled = true;
+        defaultAccountInput.disabled = true;
+    }
+});
+
+        // Display default values in the grayed-out inputs immediately when the user enters them
+        
+        document.getElementById("default_debit_card").addEventListener("change", function() {
+            var debitCardInputs = document.querySelectorAll("input[name^='debit_card_']");
+            for (var i = 0; i < debitCardInputs.length; i++) {
+                if (!debitCardInputs[i].disabled) {
+                    debitCardInputs[i].value = this.value;
+                }
+            }
+        });
+    </script>
+
+    <div id="customer_ids" style="display: none;">
+        <h2>Customer IDs:</h2>
+        <table>
+            <tr>
+                <th>Customer ID</th>
+            </tr>
+            <!-- Display customer IDs dynamically -->
+            {% for customer_id in customer_ids %}
+                <tr>
+                    <td>{{ customer_id }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div id="account_linking_form" style="display: none;">
+        <h2>Account Linking:</h2>
+        <form method="post" action="{% url 'link_customers' %}">
+            {% csrf_token %}
+            
+            <table>
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Account No</th>
+                    <th>Debit Card No</th>
+                </tr>
+                <!-- Display account linking form fields -->
+                <tr>
+                    <td></td>
+		
+
+                    <td>
+                        <select id="default_account" name="default_account">
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </td>
+                    <td>
+                        <select id="default_debit_card" name="default_debit_card">
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </td>
+                </tr>
+
+                {% for customer_id in customer_ids %}
+                    <tr>
+                        <td>{{ customer_id }}</td>
+		    <td>
+                        <select id="account_{{ customer_id }}" name="account_{{ customer_id }}">
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </td>
+                    <td>
+                        <select id="debit_card_{{ customer_id }}" name="debit_card_{{ customer_id }}">
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </td>
+
+                    </tr>
+                {% endfor %}
+                
+            </table>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script>
+        var useDefaultCheckbox = document.getElementById("use_default");
+        var defaultAccountInput = document.getElementById("default_account");
+        var defaultDebitCardInput = document.getElementById("default_debit_card");
+        
+            defaultDebitCardInput.disabled = true;
+            defaultAccountInput.disabled = true;
+        // Checkbox functionality
+        useDefaultCheckbox.addEventListener("change", function() {
+            var accountInputs = document.querySelectorAll("input[name^='account_']");
+            var debitCardInputs = document.querySelectorAll("input[name^='debit_card_']");
+
+            if (this.checked) {
+                // Set the default values for all account and debit card inputs
+                for (var i = 0; i < accountInputs.length; i++) {
+                    accountInputs[i].value = defaultAccountInput.value;
+                }
+                for (var i = 0; i < debitCardInputs.length; i++) {
+                    debitCardInputs[i].value = defaultDebitCardInput.value;
+                }
+            } else {
+                // Clear the values of all account and debit card inputs
+                for (var i = 0; i < accountInputs.length; i++) {
+                    accountInputs[i].value = "";
+                }
+                for (var i = 0; i < debitCardInputs.length; i++) {
+                    debitCardInputs[i].value = "";
+                }
+            }
+        });
+
+        // Update account and debit card values when default values change
+        defaultAccountInput.addEventListener("input", function() {
+            var accountInputs = document.querySelectorAll("input[name^='account_']");
+            if (useDefaultCheckbox.checked) {
+                // Set the new default account value for all account inputs
+                for (var i = 0; i < accountInputs.length; i++) {
+                    accountInputs[i].value = this.value;
+                }
+            }
+        });
+
+        defaultDebitCardInput.addEventListener("input", function() {
+            var debitCardInputs = document.querySelectorAll("input[name^='debit_card_']");
+            if (useDefaultCheckbox.checked) {
+                // Set the new default debit card value for all debit card inputs
+                for (var i = 0; i < debitCardInputs.length; i++) {
+                    debitCardInputs[i].value = this.value;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
