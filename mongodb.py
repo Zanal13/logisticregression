@@ -34,3 +34,45 @@ elif connection_status is False:
     print("Failed to connect to MongoDB")
 else:
     print(f"Error: {connection_status}")
+
+
+
+
+==================================================================\\
+
+
+
+from pymongo import MongoClient
+import urllib.parse
+
+def check_mongodb_connection():
+    # MongoDB connection parameters for a remote server with certificate and username/password authentication
+    mongodb_host = 'your_remote_mongodb_host'
+    mongodb_port = 'your_remote_mongodb_port'
+    certificate_file = 'path/to/your/certificate.pem'
+    mongodb_username = 'your_mongodb_username'
+    mongodb_password = 'your_mongodb_password'
+
+    # Escape username and password
+    escaped_username = urllib.parse.quote_plus(mongodb_username)
+    escaped_password = urllib.parse.quote_plus(mongodb_password)
+
+    try:
+        # Create a MongoDB client with certificate and username/password authentication
+        uri = f'mongodb://{escaped_username}:{escaped_password}@{mongodb_host}:{mongodb_port}/?ssl=true&ssl_ca_certs={certificate_file}'
+        client = MongoClient(uri)
+
+        # Check if the connection was established (no exception raised)
+        return True
+    except Exception as e:
+        # Connection error with details
+        return str(e)
+
+# Check the MongoDB connection status
+connection_status = check_mongodb_connection()
+if connection_status is True:
+    print("Connected to MongoDB")
+elif connection_status is False:
+    print("Failed to connect to MongoDB")
+else:
+    print(f"Error: {connection_status}")
