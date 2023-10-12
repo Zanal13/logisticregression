@@ -3,19 +3,6 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-      .dropbtn {
-        background-color: #04AA6D;
-        color: white;
-        padding: 16px;
-        font-size: 16px;
-        border: none;
-        cursor: pointer;
-      }
-
-      .dropbtn:hover, .dropbtn:focus {
-        background-color: #3e8e41;
-      }
-
       #myInput {
         box-sizing: border-box;
         background-image: url('searchicon.png');
@@ -25,7 +12,6 @@
         padding: 14px 20px 12px 45px;
         border: none;
         border-bottom: 1px solid #ddd;
-        margin-right: 10px; /* Add margin to separate it from the button */
       }
 
       #myInput:focus {outline: 3px solid #ddd;}
@@ -33,16 +19,17 @@
       .dropdown {
         position: relative;
         display: inline-block;
-        vertical-align: top; /* Align the button and input vertically */
+
+        vertical-align: top; /* Align the input and options vertically */
       }
 
       .dropdown-content {
         display: none;
         position: absolute;
         background-color: #f6f6f6;
+        width: 263px;
         min-width: 230px;
         overflow: auto;
-        border: 1px solid #ddd;
         z-index: 1;
       }
 
@@ -61,13 +48,12 @@
   <body style="background-color:white;">
 
     <h2>Search/Filter Dropdown</h2>
-    <p>Click on the button to open the dropdown menu, and use the input field to search for a specific dropdown link.</p>
+    <p>Start typing in the input field to search for a specific dropdown link.</p>
 
     <div class="dropdown">
-      <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-      <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+      <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()" onclick="filterFunction()" >
       <div id="myDropdown" class="dropdown-content">
-        <a href="#about">About</a>
+        <a href="https://www/google.com">About</a>
         <a href="#base">Base</a>
         <a href="#blog">Blog</a>
         <a href="#contact">Contact</a>
@@ -78,12 +64,6 @@
     </div>
 
     <script>
-      /* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-      function myFunction() {
-        document.getElementById("myDropdown").classList.toggle("show");
-      }
-
       function filterFunction() {
         var input, filter, ul, li, a, i;
         input = document.getElementById("myInput");
@@ -98,7 +78,14 @@ toggle between hiding and showing the dropdown content */
             a[i].style.display = "none";
           }
         }
+        div.classList.add("show"); // Show the options as you type
       }
+      document.addEventListener("click", function(event) {
+        var dropdown = document.getElementById("myDropdown");
+        if (event.target !== dropdown && event.target !== document.getElementById("myInput")) {
+          dropdown.classList.remove("show");
+        }
+      });
 
     </script>
 
