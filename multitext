@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Textbox with Cross Mark</title>
+  <style>
+    .container {
+      width: 500px;
+      margin: 0 auto;
+    }
+
+    #user-input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid gray;
+    }
+
+    #user-input-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #user-input-list li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px;
+      border: 1px solid gray;
+      margin-bottom: 5px;
+    }
+
+    #user-input-list li span {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <input type="text" id="user-input" placeholder="Enter your input">
+    <ul id="user-input-list"></ul>
+  </div>
+
+
+  <script>
+    const userInputList = document.getElementById("user-input-list");
+
+    document.getElementById("user-input").addEventListener("keyup", function(event) {
+      if (event.keyCode === 13) {
+        // Add the user input to the list
+        const userInput = this.value;
+        userInputList.innerHTML += `<li><span>${userInput}</span> <span class="remove-button">×</span></li>`;
+
+        // Clear the user input field
+        this.value = "";	
+      }
+    });
+
+    userInputList.addEventListener("click", function(event) {
+      // If the user clicked on the remove button, remove the corresponding list item
+      if (event.target.classList.contains("remove-button")) {
+        event.target.parentNode.remove();
+      }
+    });
+  </script>
+
+
+</body>
+</html>
