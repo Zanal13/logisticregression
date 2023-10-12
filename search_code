@@ -28,6 +28,7 @@
         position: absolute;
         background-color: #f6f6f6;
         width: 263px;
+        height: 150px;
         min-width: 230px;
         overflow: auto;
         z-index: 1;
