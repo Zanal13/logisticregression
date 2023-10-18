@@ -1,0 +1,182 @@
+1) Creating User-Friendly Interfaces:
+
+The forms used in Application are responsive and easy to use on all devices.
+
+Mandatory fields are clearly indicated. Users should be able to easily identify which fields are required and which are optional. This is done by using visual cues(*)
+
+The form uses clear and concise language. All the fields used in the form are self explanatory. In case of any validations to make user very precise about the field validation included the placeholder and  When users make a mistake, the UI should provide them with clear and helpful instructions on how to fix it by providing Use of clear and helpful error messages.
+
+Use of keyboard accessibility. The UI should be easy to use for users who rely on keyboard navigation
+
+Validating user input for membership reset and lending limit reset
+
+
+
+
+
+or
+
+
+
+
+
+Application forms are responsive and easy to use on any device.
+
+Required fields are marked with an asterisk (*).
+
+The form uses clear and concise language, and all fields are self-explanatory. Validation errors are displayed with helpful instructions on how to fix them.
+
+The form is keyboard accessible.
+
+Membership reset and lending limit reset forms validate user input.
+
+
+
+
+
+2) Bug Fixing or Existing features with limitations:
+
+UKBA balance Posting/ Transaction Posting: This existing feature restricts users to add balance to their account and fails to withdraw as a result this feature fails to meet the user expectation. And hence to enhance this feature checked with concerned team to identify the root cause of this problem and rectified the problem
+
+Miscellaneous Account Linking: As observed most of the users are expecting to link the account with the specified client number while linking an account which is using the default value and as per the feedback received from users we are collecting user input and linking them
+
+UKBA CS and CAMS mining: As observed most of the data lacks with mandatory checks will causes a serious impact and as a result a lot of mined data do not work as expected. To rectify the issue analyzed all possible combinations of the data and validated the obtained result in backend to identify which filters failed to meet the mandatory requirements
+
+Long Response time of UKBA CS and CAMS mining: The mining query being used takes a lot of time to obtain the results as it performing complex JOIN queries in the database which holds a lot of data as a result broken the complex query into smaller chunks to and finally to merge the obtained results so that the response time was quick. As part of data mining the data resides in few tables often tends to change so storing such data in cache based sessions and constantly updating it after a certain period of time
+
+Data Reservation: The existing feature allows users to reserve the data but picks the incorrect details before updating them in rservation table as a result uses cannot retieve data which has been already reserved by them.
+
+
+
+
+
+
+or
+
+
+
+
+
+UKBA balance posting/transaction posting: This feature only allows users to add balance to their accounts, but not to withdraw. We have identified the root cause of this issue and rectified it.
+
+Miscellaneous account linking: Most users expect to be able to link their accounts to a specific client number when linking an account. We are now collecting user input and linking accounts accordingly.
+
+UKBA CS and CAMS mining: We have observed that most of the data lacks mandatory checks, which can have a serious impact. As a result, a lot of the mined data does not work as expected. We have analyzed all possible combinations of the data and validated the obtained results in the backend to identify which filters failed to meet the mandatory requirements.
+
+Long response time of UKBA CS and CAMS mining: The mining query being used takes a long time to obtain results because it performs complex JOIN queries on a large database. We have broken the complex query into smaller chunks and merged the obtained results, which has improved the response time. Additionally, we are storing some of the data in cache-based sessions and constantly updating it, which has also improved the response time.
+
+Data reservation: The existing feature allows users to reserve data, but it picks the incorrect details before updating them in the reservation table. This means that users cannot retrieve data that they have reserved. We are working on fixing this issue.
+
+
+
+
+
+
+
+
+
+
+
+3) Early eligibility check:
+
+Debit Card Creation: Allow users to choose only what they are supposed to be eligible for rather then rejecting after performing all the complex backend operations
+
+Lending Limit/Membership reset: To verify if the entered user details are of valid combination or not. If not a valid combination notify the user as early as possible rather than waiting for original api to fail with an error
+
+Personal/Business Customer Creation: Allow users to create new data only if they meet the basic eligibility requirements and to notify them with precise eligibility criteria
+
+
+
+
+
+
+or
+
+
+
+
+
+
+Early eligibility check:
+
+Debit card creation: Allow users to see if they are eligible for a debit card before they start the application process.
+Lending limit/membership reset: Check if the user has entered a valid combination of user details before submitting the form. If the combination is not valid, notify the user immediately.
+Personal/business customer creation: Allow users to create a new account only if they meet the basic eligibility requirements. Notify them of the precise eligibility criteria if they do not meet the requirements.
+
+
+
+
+
+
+4) New added features:
+
+Debit Card Creation
+Online Membership Creation
+Overdraft Posting
+Emergency Overdraft Posting
+Email Address update 
+Mobile Number update
+Residential Address update
+Miscellanieous Account alignment in TDLMAHO
+Barclaycard Attachemnt in TDLCAHO
+Personal Customer creation
+BAP/BOM customer creation
+Personal/Business account creation
+Reset & Activate Membership
+Reset Lending Limit
+
+
+
+5) Achievements:
+
+Effeciency of Data : Data mined from Miner do not work as expected as a result performed an anaysis to identify the root cause of the exisiting drawbacks and to fix it
+
+Faster Retrival of Data: Uses the enhanced concepts of caching for faster retrieval of data and to store the TIAA token and use it across all the API's so as to avoid fetching data from all the time when the fetaures are being used
+
+Debit Card Issues: Engaged with CAMS team to identify the root cause of Debit card related issues and fixed them. The fix includes linking newly created card data to its associated customers.
+
+Logs monitoring: To keep track of all the possible errors that causes any api related issues and to generate a report based on DataMiner user consumptions with the associated features
+
+Received recognition from Andrew Hallam for the significant reduction of tickets to Data Team.
+
+
+
+
+
+or
+
+
+
+
+Achievements:
+
+Data efficiency: Analyzed the root cause of drawbacks in the data mined from Miner and fixed them.
+Faster data retrieval: Implemented caching to improve data retrieval speed and store the TIAA token for use across all APIs, avoiding the need to fetch data every time.
+Debit card issues: Identified and fixed the root cause of debit card related issues with the CAMS team. The fix includes linking newly created card data to its associated customers.
+Logs monitoring: Set up logs monitoring to track all possible errors that cause API issues and generate a report based on DataMiner user consumption of features.
+Received recognition from Andrew Hallam: Received recognition from Andrew Hallam for significantly reducing the number of tickets to the Data Team
+
+
+
+
+
+
+6) Learnings:
+Completed all mandatory trainings on time.
+Updated my skills with new technologies like React, as required by the project.
+
+
+
+7) Additional Work:
+RACF credentials: Collaborated with Ayushee to remove the dependency on RACF credentials.
+Search functionality: Implemented search functionality to improve the user experience of the project.
+Bulk debit card creation: Helped to contribute with Python script for bulk debit card creation required for Databot data generation.
+Automated SQL query generation: Implemented a Python script to generate SQL code to insert data into TDLCMDO, TDLCMRA, and TDLCMKR.
+
+
+I am proud to say that I have maintained a perfect attendance record this year. I am committed to being at work on time and ready to work every day. This has allowed me to consistently met or exceeded expectations in my role and deliver high-quality work and the reduction of tickets is a clear indication of the same.
+
+
+
+
+
