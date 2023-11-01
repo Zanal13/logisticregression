@@ -1,0 +1,150 @@
+first method
+
+
+public class DynamicProperties {
+    private String newField1;
+    private String newField2;
+
+    public String getNewField1() {
+        return newField1;
+    }
+
+    public void setNewField1(String newField1) {
+        this.newField1 = newField1;
+    }
+
+    public String getNewField2() {
+        return newField2;
+    }
+
+    public void setNewField2(String newField2) {
+        this.newField2 = newField2;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder jsonBuilder = new StringBuilder();
+        jsonBuilder.append("{");
+        jsonBuilder.append("\"customers\": {");
+        jsonBuilder.append("\"firstName\": \"Joe\",");
+        jsonBuilder.append("\"lastName\": \"Bloggs\",");
+        jsonBuilder.append("\"fullAddress\": {");
+        jsonBuilder.append("\"streetAddress\": \"21 2nd Street\",");
+        jsonBuilder.append("\"city\": \"New York\",");
+        jsonBuilder.append("\"state\": \"NY\",");
+        jsonBuilder.append("\"postalCode\": \"10021\","); // Updated with a placeholder value
+        jsonBuilder.append("\"newField1\": \"").append(newField1).append("\",");
+        jsonBuilder.append("\"newField2\": \"").append(newField2).append("\"");
+        jsonBuilder.append("}");
+        jsonBuilder.append("}");
+        jsonBuilder.append("}");
+        return jsonBuilder.toString();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        DynamicProperties dynamicProperties = new DynamicProperties();
+        dynamicProperties.setNewField1("Value1");
+        dynamicProperties.setNewField2("Value2");
+
+        String updatedJsonBody = dynamicProperties.toString();
+
+        if (updatedJsonBody != null) {
+            System.out.println(updatedJsonBody);
+        } else {
+            System.out.println("Failed to update the JSON body.");
+        }
+    }
+}
+
+
+
+
+
+
+
+second method
+
+public class DynamicProperties {
+    private String newField1;
+    private String newField2;
+
+    public String getNewField1() {
+        return newField1;
+    }
+
+    public void setNewField1(String newField1) {
+        this.newField1 = newField1;
+    }
+
+    public String getNewField2() {
+        return newField2;
+    }
+
+    public void setNewField2(String newField2) {
+        this.newField2 = newField2;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder jsonBuilder = new StringBuilder();
+        jsonBuilder.append("{");
+        jsonBuilder.append("\"customers\": {");
+        jsonBuilder.append("\"firstName\": \"Joe\",");
+        jsonBuilder.append("\"lastName\": \"Bloggs\",");
+        jsonBuilder.append("\"fullAddress\": {");
+        jsonBuilder.append("\"streetAddress\": \"21 2nd Street\",");
+        jsonBuilder.append("\"city\": \"New York\",");
+        jsonBuilder.append("\"state\": \"NY\",");
+        jsonBuilder.append("\"postalCode\": \"10021\","); // Updated with a placeholder value
+        jsonBuilder.append("\"newField1\": \"").append(newField1).append("\",");
+        jsonBuilder.append("\"newField2\": \"").append(newField2).append("\"");
+        jsonBuilder.append("}");
+        jsonBuilder.append("}");
+        jsonBuilder.append("}");
+        return jsonBuilder.toString();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        DynamicProperties dynamicProperties = new DynamicProperties();
+        dynamicProperties.setNewField1("Value1");
+        dynamicProperties.setNewField2("Value2");
+
+        String updatedJsonBody = dynamicProperties.toString();
+
+        if (updatedJsonBody != null) {
+            System.out.println(updatedJsonBody);
+        } else {
+            System.out.println("Failed to update the JSON body.");
+        }
+    }
+}
+
+
+
+
+
+
+in case of using pom.xml
+<dependencies>
+    <!-- Jackson JSON library -->
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.13.0</version> <!-- Use the latest version -->
+    </dependency>
+</dependencies>
+
+
+
+
+in case of gradle in build.gradle
+
+dependencies {
+    // Jackson JSON library
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0' // Use the latest version
+}
+
