@@ -1,0 +1,58 @@
+import java.util.HashMap;
+import java.util.Map;
+
+public class Main {
+
+    private static final Map<String, Map<Integer, String>> errorMessages = new HashMap<>();
+
+    public static void initializeErrorMessages() {
+        // Initialize the error messages map with data from a database, file, or other source
+
+        // Example: Adding error messages for API "product"
+        Map<Integer, String> productErrorMessages = new HashMap<>();
+        productErrorMessages.put(1001, "Product not found");
+        productErrorMessages.put(1002, "Invalid product ID");
+        productErrorMessages.put(1003, "Product out of stock");
+        errorMessages.put("product", productErrorMessages);
+        
+        Map<Integer, String> customerErrorMessages = new HashMap<>();
+        customerErrorMessages.put(2001, "Product not found");
+        customerErrorMessages.put(2002, "Invalid product ID");
+        customerErrorMessages.put(2003, "Product out of stock");
+        errorMessages.put("customer", customerErrorMessages);
+
+        // Add error messages for other APIs as needed
+    }
+
+    public static String getErrorMessage(String apiName, int errorCode) {
+        // Check if error messages have been initialized
+        if (errorMessages.isEmpty()) {
+            initializeErrorMessages();
+        }
+
+        // Retrieve the error messages for the specified API
+        Map<Integer, String> apiErrorMessages = errorMessages.get(apiName);
+
+        // If no error messages found for the API, return null
+        if (apiErrorMessages == null) {
+            return null;
+        }
+
+        // Retrieve the error message for the specified error code
+        String errorMessage = apiErrorMessages.get(errorCode);
+
+        // If no error message found for the error code, return a generic error message
+        if (errorMessage == null) {
+            return "An unknown error occurred";
+        }
+
+        // Return the specific error message
+        return errorMessage;
+    }
+
+    public static void main(String[] args) {
+        // Example usage
+        String errorMessage = getErrorMessage("customer", 2003);
+        System.out.println(errorMessage); // Output: Product not found
+    }
+}
