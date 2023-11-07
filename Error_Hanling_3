@@ -1,0 +1,69 @@
+import java.util.HashMap;
+import java.util.Map;
+
+public class Main {
+
+    private static final Map<String, Map<Integer, String>> errorMessages = new HashMap<>();
+
+    public static void initializeErrorMessages() {
+        // Initialize the error messages map with data from a database, file, or other source
+
+        // Example: Adding error messages for API "product"
+        Map<Integer, String> productErrorMessages = new HashMap<>();
+        productErrorMessages.put(1001, "Product not found");
+        productErrorMessages.put(1002, "Invalid product ID");
+        productErrorMessages.put(1003, "Product out of stock");
+        errorMessages.put("product", productErrorMessages);
+        
+        Map<Integer, String> customerErrorMessages = new HashMap<>();
+        customerErrorMessages.put(2001, "Customer not found");
+        customerErrorMessages.put(2002, "Invalid Customer ID");
+        customerErrorMessages.put(2003, "Customer out of stock");
+        errorMessages.put("customer", customerErrorMessages);
+
+        // Add error messages for other APIs as needed
+    }
+
+    public static String getErrorMessage(String apiName, String errorCodeString) {
+    // Convert error code string to integer
+    int errorCode;
+    try {
+        errorCode = Integer.parseInt(errorCodeString);
+    } catch (NumberFormatException e) {
+        // Handle invalid error code format
+        return "Invalid error code format: " + errorCodeString;
+    }
+
+    // Check if error messages have been initialized
+    if (errorMessages.isEmpty()) {
+        initializeErrorMessages();
+    }
+
+    // Retrieve the error messages for the specified API
+    Map<Integer, String> apiErrorMessages = errorMessages.get(apiName);
+
+    // If no error messages found for the API, return null
+    if (apiErrorMessages == null) {
+        return null;
+    }
+
+    // Retrieve the error message for the specified error code
+    String errorMessage = apiErrorMessages.get(errorCode);
+
+    // Check if error message is found
+    if (errorMessage == null) {
+        // If error message is not found, return a custom message
+        errorMessage = "The error is: " + errorCodeString + " passed";
+    }
+
+    return errorMessage;
+}
+
+
+
+    public static void main(String[] args) {
+        // Example usage
+        String errorMessage = getErrorMessage("customer", "2003");
+        System.out.println(errorMessage); // Output: Product not found
+    }
+}
