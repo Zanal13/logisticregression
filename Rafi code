@@ -1,0 +1,45 @@
+import pandas as pd
+
+def process_excel(input_file, output_file):
+    # Read the Excel file
+    df = pd.read_excel(input_file)
+
+    # Create a new DataFrame with the desired structure
+    new_columns = []
+    new_data = []
+
+    for column in df.columns:
+        new_columns.extend([column, 'ColumnName'])
+        new_data.extend(df[column])
+        new_data.extend([column] * len(df))
+
+    new_df = pd.DataFrame({new_columns[i]: [new_data[i]] for i in range(len(new_columns))})
+
+    # Write the new DataFrame to a new Excel file
+    new_df.to_excel(output_file, index=False)
+
+if __name__ == "__main__":
+    # Replace 'input_file.xlsx' with your input Excel file and 'output_file.xlsx' with the desired output file name
+    input_file = 'input_file.xlsx'
+    output_file = 'output_file.xlsx'
+
+    process_excel(input_file, output_file)
+
+    print(f"Processing completed. Results saved to {output_file}.")
+
+Input
+
+| Name  | Age | City    | Occupation  | Salary |
+|-------|-----|---------|-------------|--------|
+| Alice | 25  | New York| Programmer  | 70000  |
+| Bob   | 30  | Chicago | Engineer    | 80000  |
+| Carol | 28  | Boston  | Data Analyst| 60000  |
+
+
+Output
+
+| Name  | ColumnName | Age | ColumnName | City    | ColumnName | Occupation  | ColumnName | Salary | ColumnName |
+|-------|------------|-----|------------|---------|------------|-------------|------------|--------|------------|
+| Alice | Name       | 25  | Age        | New York| City       | Programmer  | Occupation | 70000  | Salary     |
+| Bob   | Bob        | 30  | 30         | Chicago | Chicago    | Engineer    | Engineer   | 80000  | 80000      |
+| Carol | Carol      | 28  | 28         | Boston  | Boston     | Data Analyst| Data Analyst| 60000  | 60000      |
