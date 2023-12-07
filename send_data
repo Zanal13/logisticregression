@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html
+ 
+lang="en">
+
+<head>
+
+  
+<meta
+ 
+charset="UTF-8">
+
+  
+<meta
+ 
+name="viewport"
+ 
+content="width=device-width, initial-scale=1.0">
+
+  
+<title>Table with AJAX</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Product 1</td>
+        <td>This is product number one.</td>
+        <td><button onclick="sendRowData(this)">Send Data</button></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Product 2</td>
+        <td>This is product number two.</td>
+        <td><button onclick="sendRowData(this)">Send Data</button></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Product 3</td>
+        <td>This is product number three.</td>
+        <td><button onclick="sendRowData(this)">Send Data</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <script>
+function getRowData(row) {
+  const cells = Array.from(row.querySelectorAll("td"));
+  const data = {};
+  cells.forEach((cell, index) => {
+    if (index === 0) {
+      data.id = parseInt(cell.textContent);
+    } else if (index === 1) {
+      data.name = cell.textContent;
+    } else if (index === 2) {
+      data.description = cell.textContent;
+    }
+  });
+  return data;
+}
+
+function sendRowData(button) {
+  const data = getRowData(button.parentNode);
+
+  // Send data to Django view using AJAX
+  $.ajax({
+    url: "/your-view-url/",
+    type: "POST",
+    data: JSON.stringify(data),
+    contentType: "application/json",
+    success: function(response) {
+      // Update the page or redirect based on response
+      alert("Data sent successfully!");
+      // ...
+    },
+    error: function(error) {
+      // Handle error
+      alert("Error sending data: " + error);
+    }
+  });
+}
+</script>
+</body>
+</html>
+
+
+
+from django.http import HttpResponse
+
+def your_view_url(request):
+  if request.method == "POST":
+    try:
+      data = json.loads(request.body)
+      # Perform operation using data
+      # ...
+
+      # Prepare data for the new page
+      response_data = {"message": "Operation successful"}
+
+      # Render the new page template
+      return render(request, "your-new-page-template.html", context={"response_data": response_data})
+    except Exception as e:
+      # Handle error
+      return HttpResponse(status=400)
+  else:
+    return HttpResponse(status=405)
