@@ -70,3 +70,12 @@
 
 </body>
 </html>
+
+$('.data-table').each(function() {
+                var tableId = $(this).data('table-id');
+                $('#' + tableId).DataTable({
+                    "paging": false,
+                    "ordering": true,
+                    "info": false
+                });
+            });
