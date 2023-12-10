@@ -1,4 +1,4 @@
-$('th').on('click', function () {
+$('#table1 th, #table2 th').on('click', function () {
                 var columnIndex = $(this).index();
                 var table = $(this).closest('table').DataTable();
                 var currentOrder = table.order()[0];
