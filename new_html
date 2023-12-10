@@ -1,30 +1,15 @@
-$('#table1 thead th').each(function () {
-                var title = $(this).text();
-                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+$('th').on('click', function () {
+                var columnIndex = $(this).index();
+                var table = $(this).closest('table').DataTable();
+                var currentOrder = table.order()[0];
+                var currentColumnIndex = currentOrder[0];
+
+                if (currentColumnIndex === columnIndex && currentOrder[1] === 'asc') {
+                    // If the current column is already sorted in ascending order, toggle to descending
+                    table.order([columnIndex, 'desc']).draw();
+                } else {
+                    // Otherwise, toggle to ascending
+                    table.order([columnIndex, 'asc']).draw();
+                }
             });
-
-            $('#table2 thead th').each(function () {
-                var title = $(this).text();
-                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-            });
-
-            // Apply individual column searching to each table
-            table1.columns().every(function () {
-                var that = this;
-
-                $('input', this.header()).on('keyup change', function () {
-                    if (that.search() !== this.value) {
-                        that.search(this.value).draw();
-                    }
-                });
-            });
-
-            table2.columns().every(function () {
-                var that = this;
-
-                $('input', this.header()).on('keyup change', function () {
-                    if (that.search() !== this.value) {
-                        that.search(this.value).draw();
-                    }
-                });
-            });
+        });
