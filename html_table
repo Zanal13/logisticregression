@@ -79,3 +79,10 @@ $('.data-table').each(function() {
                     "info": false
                 });
             });
+
+$('th').on('click', function() {
+                var columnIndex = $(this).index();
+                var tableId = $(this).closest('table').data('table-id');
+                $('#' + tableId).DataTable().order([columnIndex, 'asc']).draw();
+            });
+        });
