@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Page</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+</head>
+<body>
+
+    <h2>DataFrame 1</h2>
+    <table border="1" class="data-table">
+        <thead>
+            <tr>
+                {% for column in df1.columns %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for index, row in df1.iterrows %}
+                <tr>
+                    {% for value in row %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>DataFrame 2</h2>
+    <table border="1" class="data-table">
+        <thead>
+            <tr>
+                {% for column in df2.columns %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for index, row in df2.iterrows %}
+                <tr>
+                    {% for value in row %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        $(document).ready(function() {
+            // Apply blue color to headers
+            $('th').css('background-color', 'blue');
+
+            // Initialize DataTables for each table with custom sorting
+            $('.data-table').DataTable({
+                "paging": false,  // Disable pagination if needed
+                "ordering": true, // Enable sorting
+                "info": false     // Disable information display
+            });
+
+            // Handle custom sorting on header click
+            $('th').on('click', function() {
+                var columnIndex = $(this).index();
+                $('.data-table').DataTable().order([columnIndex, 'asc']).draw();
+            });
+        });
+    </script>
+
+</body>
+</html>
