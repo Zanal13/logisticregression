@@ -1,3 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Page</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+    <style>
+        .table-container {
+            max-width: 800px; /* Set your desired maximum width */
+            overflow-x: auto; /* Add horizontal scrollbar if content overflows */
+        }
+    </style>
+</head>
+<body>
+
     <div class="table-container">
         {% for df in [df1, df2] %}
             <h2>DataFrame {{ forloop.counter }}</h2>
@@ -21,3 +37,43 @@
             </table>
         {% endfor %}
     </div>
+
+    <script>
+        $(document).ready(function() {
+            // Apply blue color to headers
+            $('th').css('background-color', 'blue');
+
+            // Function to initialize DataTables for a given DataFrame and table ID
+            function initializeDataTable(dataFrame, tableId) {
+                return $('#' + tableId).DataTable({
+                    "paging": false,
+                    "ordering": true,
+                    "info": false
+                });
+            }
+
+            // Initialize DataTables for each table
+            {% for df in [df1, df2] %}
+                initializeDataTable({{ df.to_json() | safe }}, 'table{{ forloop.counter }}');
+            {% endfor %}
+
+            // Handle custom sorting on header click for all tables
+            $('th').on('click', function () {
+                var columnIndex = $(this).index();
+                var table = $(this).closest('table').DataTable();
+                var currentOrder = table.order()[0];
+                var currentColumnIndex = currentOrder[0];
+
+                if (currentColumnIndex === columnIndex && currentOrder[1] === 'asc') {
+                    // If the current column is already sorted in ascending order, toggle to descending
+                    table.order([columnIndex, 'desc']).draw();
+                } else {
+                    // Otherwise, toggle to ascending
+                    table.order([columnIndex, 'asc']).draw();
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
