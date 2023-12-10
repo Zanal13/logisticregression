@@ -1,15 +1,23 @@
-$('#table1 th, #table2 th').on('click', function () {
-                var columnIndex = $(this).index();
-                var table = $(this).closest('table').DataTable();
-                var currentOrder = table.order()[0];
-                var currentColumnIndex = currentOrder[0];
-
-                if (currentColumnIndex === columnIndex && currentOrder[1] === 'asc') {
-                    // If the current column is already sorted in ascending order, toggle to descending
-                    table.order([columnIndex, 'desc']).draw();
-                } else {
-                    // Otherwise, toggle to ascending
-                    table.order([columnIndex, 'asc']).draw();
-                }
-            });
-        });
+    <div class="table-container">
+        {% for df in [df1, df2] %}
+            <h2>DataFrame {{ forloop.counter }}</h2>
+            <table border="1" class="data-table" id="table{{ forloop.counter }}">
+                <thead>
+                    <tr>
+                        {% for column in df.columns %}
+                            <th>{{ column }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for index, row in df.iterrows %}
+                        <tr>
+                            {% for value in row %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+    </div>
