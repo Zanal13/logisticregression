@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+    <style>
+        body {
+            margin: 0; /* Remove default body margin */
+            overflow-x: hidden; /* Prevent horizontal scrolling of the entire page */
+        }
+
+        .table-container {
+            max-width: 800px; /* Set your desired maximum width */
+            overflow-x: auto; /* Add horizontal scrollbar if content overflows */
+            height: 300px; /* Set your desired height */
+            position: relative; /* Needed for absolute positioning of the scrollbar */
+        }
+
+        .table-header {
+            cursor: pointer;
+            background-color: lightgray;
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .table-content {
+            display: none;
+        }
+
+        /* Apply scroll to only this table */
+        .data-table {
+            width: auto; /* Set the table width to auto */
+            table-layout: auto; /* Use auto for table layout */
+        }
+
+        .scrollbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 16px; /* Set your desired scrollbar height */
+            overflow-x: auto;
+        }
+
+        th {
+            background-color: blue; /* Apply blue color to headers */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="table-container">
+        <div class="table-header" id="table1-header">DataFrame 1</div>
+        <div class="table-content" id="table1-content">
+            <table border="1" class="data-table" id="table1">
+                <thead>
+                    <tr>
+                        <!-- Your table headers here -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Your table body here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Scrollbar -->
+        <div class="scrollbar"></div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Function to initialize DataTables for a given table ID
+            function initializeDataTable(tableId) {
+                return $('#' + tableId).DataTable({
+                    "paging": false,
+                    "ordering": true,
+                    "info": false
+                });
+            }
+
+            // Initialize DataTable for the specific table
+            var dataTable1 = initializeDataTable('table1');
+
+            // Handle custom sorting on header click for this table
+            $('#table1 th').on('click', function () {
+                var columnIndex = $(this).index();
+                var currentOrder = dataTable1.order()[0];
+                var currentColumnIndex = currentOrder[0];
+
+                if (currentColumnIndex === columnIndex && currentOrder[1] === 'asc') {
+                    // If the current column is already sorted in ascending order, toggle to descending
+                    dataTable1.order([columnIndex, 'desc']).draw();
+                } else {
+                    // Otherwise, toggle to ascending
+                    dataTable1.order([columnIndex, 'asc']).draw();
+                }
+            });
+
+            // Set scrollbar to the bottom
+            var scrollbar = $('.scrollbar');
+            scrollbar[0].scrollTop = scrollbar[0].scrollHeight;
+
+            // Collapsible functionality
+            $('.table-header').on('click', function () {
+                var content = $(this).next('.table-content');
+                content.slideToggle();
+            });
+        });
+    </script>
+
+</body>
+</html>
