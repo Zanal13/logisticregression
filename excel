@@ -1,0 +1,43 @@
+import openpyxl
+import requests
+from threading import Thread
+
+# Load the Excel workbook
+workbook = openpyxl.load_workbook("your_excel_file.xlsx")
+sheet = workbook.active
+
+# Define API endpoint and headers (replace with your actual values)
+api_url = "https://your-api-endpoint"
+headers = {"Authorization": "Bearer your-api-token"}
+
+def process_chunk(chunk):
+    for row in chunk:
+        data_to_send = {
+            # Map cell values to API request data (replace with actual column names)
+            "column1": row[0].value,
+            "column2": row[1].value,
+            # ... add more columns as needed
+        }
+        response = requests.post(api_url, headers=headers, json=data_to_send)
+
+        if response.status_code == 200:
+            api_output = response.json()  # Assuming JSON response
+            # Write API output to corresponding cell (adjust as needed)
+            sheet.cell(row=row[0].row, column=4).value = api_output["output_value"]
+        else:
+            print(f"API error for row {row[0].row}: {response.text}")
+
+# Divide rows into 5 equal chunks (20 rows each)
+chunks = [sheet[i * 20:(i + 1) * 20] for i in range(5)]
+
+# Create and start 5 threads to process chunks concurrently
+threads = [Thread(target=process_chunk, args=(chunk,)) for chunk in chunks]
+for thread in threads:
+    thread.start()
+
+# Wait for all threads to finish
+for thread in threads:
+    thread.join()
+
+# Save the updated Excel file
+workbook.save("your_excel_file_updated.xlsx")
